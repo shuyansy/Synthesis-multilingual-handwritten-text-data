@@ -10,5 +10,11 @@ Detecting multilingual handwritten texts in the document is demanding due to the
 
 ## Installation
 
-### Download source document data from [XFUND](https://github.com/doc-analysis/XFUND)
+### Download source document data from [XFUND](https://github.com/doc-analysis/XFUND) 
+### Download multilingual handwritten recognition data from [](https://github.com/doc-analysis/XFUND) 
 
+
+
+### run a demo script for handwritten texts generation.(50% printed data will be replaced by handwritten one, and the results will be recorded in coco-style annotation)
+
+```python Funsd.py```
