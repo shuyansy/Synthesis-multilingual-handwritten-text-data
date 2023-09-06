@@ -8,3 +8,7 @@ Detecting multilingual handwritten texts in the document is demanding due to the
 | ![替代文本1](zh_train_5_0.jpg) | ![替代文本2](zh_train_8_8.jpg) |
 | Japanese | Chinese |
 
+## Installation
+
+### Download source document data from [XFUND](https://github.com/doc-analysis/XFUND)
+
