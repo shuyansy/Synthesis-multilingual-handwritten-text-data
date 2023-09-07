@@ -9,7 +9,7 @@ import os
 
 
 
-def main(mask_list_file,data,lan,vis):
+def main(mask_list_file,data,lan,mode,vis):
     output_path = os.path.join(lan, "images")
     vis_path = os.path.join(lan, "visual")
 
@@ -29,6 +29,8 @@ def main(mask_list_file,data,lan,vis):
         "annotations": [],
         "categories": []
     }
+    idx=0
+    unique=0
     for num in range(9):
         for i in range(len(data["documents"])):
 
@@ -62,7 +64,7 @@ def main(mask_list_file,data,lan,vis):
 
 
             # 填充图片信息
-            image_id =each_document["id"]+"_"+str(num) # 图像 ID，可以自行设置
+            image_id =idx # 图像 ID，可以自行设置
             image_file_name = each_document["id"] +"_"+str(num) + ".jpg"  # 图像文件名
             image_width = w  # 图像宽度
             image_height = h  # 图像高度
@@ -74,13 +76,11 @@ def main(mask_list_file,data,lan,vis):
             }
             coco_data["images"].append(image_info)
 
-           
-
-            i=0
+        
             for b in bbox:
                 x1,y1,x2,y2=b[0],b[1],b[2],b[3]
                 area=(x2-x1) * (y2-y1)
-                anno={"id":i,
+                anno={"id":unique,
                 "image_id":image_id,
                 "category_id":1,
                 "bbox":[x1,y1,x2-x1,y2-y1],
@@ -88,7 +88,7 @@ def main(mask_list_file,data,lan,vis):
                 "iscrowd":0,
                 "segmentation":[[x1,y1],[x2,y1],[x2,y2],[x1,y2]]
                 }
-                i+=1
+                unique+=1
 
                 # 填充标注信息
                 coco_data["annotations"].append(anno)
@@ -128,8 +128,7 @@ def main(mask_list_file,data,lan,vis):
 
             if vis:
                 cv2.imwrite(os.path.join(vis_path,img_name), image)
-
-        num+=1
+            idx+=1
     
 
     # 将 COCO 数据写入 JSON 文件
@@ -142,7 +141,7 @@ def main(mask_list_file,data,lan,vis):
             "supercategory": category_name  # 这里简化，将超类别设为类别名
         }
         coco_data["categories"].append(category_info)
-    output_file = "annotations.json"
+    output_file = mode+"_"+"annotations.json"
     with open(os.path.join(lan,output_file), "w") as f:
         json.dump(coco_data, f, indent=4)
 
@@ -162,54 +161,54 @@ if __name__ == "__main__":
         f = open(annotation_file, 'r')
         content = f.read()
         data = json.loads(content)
-        main(mask_list_file,data,lan,vis=False)
-
-
-        annotation_file="XFUND/zh.val.json"
-        f = open(annotation_file, 'r')
-        content = f.read()
-        data = json.loads(content)
-        main(mask_list_file,data,lan,vis=False)
-
-    if "Ja" in mode:
-        lan="Ja"
-        mask_list_file="Jan_hand_data/"
-        mask_list=os.listdir(mask_list_file)
-        annotation_file="XFUND/zh.train.json"
-        f = open(annotation_file, 'r')
-        content = f.read()
-        data = json.loads(content)
-        main(mask_list_file,data,lan,vis=False)
-
+        main(mask_list_file,data,lan,mode="train",vis=False)
 
         annotation_file="XFUND/zh.val.json"
         f = open(annotation_file, 'r')
         content = f.read()
         data = json.loads(content)
-        main(mask_list_file,data,lan,vis=False)
+        main(mask_list_file,data,lan,mode="val",vis=False)
+
+
+    # if "Ja" in mode:
+    #     lan="Ja"
+    #     mask_list_file="Jan_hand_data/"
+    #     mask_list=os.listdir(mask_list_file)
+    #     annotation_file="XFUND/zh.train.json"
+    #     f = open(annotation_file, 'r')
+    #     content = f.read()
+    #     data = json.loads(content)
+    #     main(mask_list_file,data,lan,vis=False)
+
+
+    #     annotation_file="XFUND/zh.val.json"
+    #     f = open(annotation_file, 'r')
+    #     content = f.read()
+    #     data = json.loads(content)
+    #     main(mask_list_file,data,lan,vis=False)
     
-    if "ch" in mode:
-        lan="ch"
-        mask_list_file="corpus/"
-        mask_list_1=os.listdir(mask_list_file)
-        mask_list=[]
-        for i in mask_list_1:
-            file_1=os.listdir(os.path.join(mask_list_file,i))
-            for f in file_1:
-                mask_list.append(os.path.join(i,f))
+    # if "ch" in mode:
+    #     lan="ch"
+    #     mask_list_file="corpus/"
+    #     mask_list_1=os.listdir(mask_list_file)
+    #     mask_list=[]
+    #     for i in mask_list_1:
+    #         file_1=os.listdir(os.path.join(mask_list_file,i))
+    #         for f in file_1:
+    #             mask_list.append(os.path.join(i,f))
         
 
-        annotation_file="XFUND/zh.train.json"
-        f = open(annotation_file, 'r')
-        content = f.read()
-        data = json.loads(content)
-        main(mask_list_file,data,lan,vis=False)
+    #     annotation_file="XFUND/zh.train.json"
+    #     f = open(annotation_file, 'r')
+    #     content = f.read()
+    #     data = json.loads(content)
+    #     main(mask_list_file,data,lan,vis=False)
 
-        annotation_file="XFUND/zh.val.json"
-        f = open(annotation_file, 'r')
-        content = f.read()
-        data = json.loads(content)
-        main(mask_list_file,data,lan,vis=False)
+    #     annotation_file="XFUND/zh.val.json"
+    #     f = open(annotation_file, 'r')
+    #     content = f.read()
+    #     data = json.loads(content)
+    #     main(mask_list_file,data,lan,vis=False)
 
 
 
