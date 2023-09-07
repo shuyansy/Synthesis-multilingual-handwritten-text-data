@@ -11,8 +11,8 @@ Detecting multilingual handwritten texts in the document is demanding due to the
 ## Installation
 
 ### Download source document data from [XFUND](https://github.com/doc-analysis/XFUND) 
-### Download multilingual handwritten recognition data from [](https://github.com/doc-analysis/XFUND) 
-
+### Download multilingual handwritten recognition images from [data](https://drive.google.com/drive/folders/1Py7nKkIBnjXna9s0QXbwQGSMQHqWRh5J?usp=drive_link) 
+note that you can also generate your own specific language by some released methods (such as GAN or Diffusion)
 
 
 ### run a demo script for handwritten texts generation.(50% printed data will be replaced by handwritten one, and the results will be recorded in coco-style annotation)
